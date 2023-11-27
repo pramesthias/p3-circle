@@ -1,5 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { GraphQLError } = require("graphql");
 
 const typeDefs = `#graphql
   type User {
@@ -33,7 +34,15 @@ const resolvers = {
     //   return Users.find((u) => u.username === username); // 3 (SEARCH)
     // },
     userById: (_, args) => {
-      return Users.find((u) => u.id == args.id); // NO. 5 MENAMPILKAN PROFILE USER => get user
+      const user = Users.find((u) => u.id == args.id); // NO. 5 MENAMPILKAN PROFILE USER => get user
+
+      if(!user) {
+        throw new GraphQLError("User not found", {
+        extensions: { code: 'DATA_NOT_FOUND' },
+});
+
+}
+return Users.find((u) => u.id == args.id);
     },
   },
 
