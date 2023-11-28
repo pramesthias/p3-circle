@@ -1,6 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const Post = require("../models/post")
+const Post = require("../models/post");
 
 const typeDefs = `#graphql
 
@@ -44,13 +44,8 @@ type Like {
 
 const resolvers = {
   Query: {
-    posts: async () => {
-      // const db = await connect();
-      // const posts = db.collection("Posts");
-      // const arrPosts = await posts.find().toArray();
-      const arrPosts = await Post.allPosts()
-      return arrPosts; // NO. 7 DAFTAR POSTS TERBARU => get post
-    },
+    posts: async () => {},
+
     postById: (_, args) => {
       return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
     },

@@ -32,24 +32,26 @@ const resolvers = {
     // searchUsers: (_, { username }) => {
     //   return Users.find((u) => u.username === username); // 3 (SEARCH)
     // },
-    userById: (_, args) => {
-      const user = Users.find((u) => u.id == args.id); // NO. 5 MENAMPILKAN PROFILE USER => get user
+    userById: async (_, args) => {
+      const { id } = args;
+      const user = await User.getUserById(id); // NO. 5 MENAMPILKAN PROFILE USER => get user
 
       if (!user) {
         throw new GraphQLError("User not found", {
           extensions: { code: "DATA_NOT_FOUND" },
         });
       }
-      return Users.find((u) => u.id == args.id);
+      // return Users.find((u) => u.id == args.id);
+      return user;
     },
   },
 
   Mutation: {
     addUser: async (_, args) => {
-    const { name, username, email, password } = args;
-    const newUser = User.register( name, username, email, password )
+      const { name, username, email, password } = args;
+      const newUser = User.register(name, username, email, password);
 
-    return newUser;
+      return newUser;
     },
   },
 };
