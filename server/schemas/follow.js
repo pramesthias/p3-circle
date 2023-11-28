@@ -7,14 +7,14 @@ const typeDefs = `#graphql
     _id: ID
     followingId: ID
     followerId: ID
-    createdAt: Date
-    updatedAt: Date
+    createdAt: String
+    updatedAt: String
   }
 
   # END POINT
   type Mutation {
     #follow
-    follow(followingId: ID, followerId: ID, createdAt: Date, updatedAt: Date) = Follow
+    follow(followingId: ID, followerId: ID, createdAt: String, updatedAt: String) : Follow
   }
 `;
 
@@ -24,7 +24,7 @@ const resolvers = {
 
     follow: (_, args) => {
       const { followingId, followerId, createdAt, updatedAt } = args;
-      let newFollow = { followingId: ID, followerId: ID, createdAt: Date, updatedAt: Date };
+      let newFollow = { followingId: ID, followerId: ID, createdAt: String, updatedAt: String };
       Likes.push(newFollow);
       return newFollow;
     },
