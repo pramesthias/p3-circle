@@ -21,6 +21,8 @@ const {
   resolvers: followResolvers,
 } = require("./schemas/follow");
 
+const { authentication } = require("./middlewares/authentication");
+
 const server = new ApolloServer({
   typeDefs: [userTypeDefs, postTypeDefs, followTypeDefs],
   resolvers: [userResolvers, postResolvers, followResolvers],
@@ -31,8 +33,17 @@ connect()
     console.log("CONNECTED TO MONGODB");
     return startStandaloneServer(server, {
       listen: { port: 3000 },
-      context: () => {
-        return {};
+      context: ({ req }) => {
+        return {
+          authentication: async () => {
+            const accessToken = req.headers.authorization.split(" ")[1];
+            try {
+              return await authentication(accessToken);
+            } catch (error) {
+              throw error;
+            }
+          },
+        };
       },
     });
   })

@@ -18,22 +18,35 @@ type Token {
 
   # END POINT
   type Query {
-    # userLogin(username: String, password: String): User
-    # searchUsers(username): [User]
+    searchUser(username: String): User #[User] display all
     userById(id: ID): User
   }
 
   type Mutation {
-    addUser(name: String, username: String!, email: String!, password: String!): User    
+    registerUser(name: String, username: String!, email: String!, password: String!): User    
     userLogin(username: String!, password: String!): Token  #email?
   }
 `;
 
 const resolvers = {
   Query: {
-    // searchUsers: (_, { username }) => {
-    //   return Users.find((u) => u.username === username); // 3 (SEARCH)
-    // },
+    // search by username
+    searchUser: async (_, args) => {
+      try {
+        const { username } = args;
+        const user = await User.findUsername(username); // 3 (SEARCH)
+
+        if (!user) {
+          throw new GraphQLError("User not found", {
+            extensions: { code: "DATA_NOT_FOUND" },
+          });
+        }
+
+        return user;
+      } catch (error) {
+        throw error;
+      }
+    },
 
     userById: async (_, args) => {
       try {
@@ -55,7 +68,7 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (_, args) => {
+    registerUser: async (_, args) => {
       try {
         const { name, username, email, password } = args;
         const newUser = User.register(name, username, email, password);

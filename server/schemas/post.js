@@ -44,11 +44,10 @@ type Like {
 
 const resolvers = {
   Query: {
-    posts: async () => {
+    posts: async (_, __, contextValue) => {
+      const user = await contextValue.authentication();
+
       try {
-        // const db = await connect();
-        // const posts = db.collection("Posts");
-        // const arrPosts = await posts.find().toArray();
         const posts = await Post.allPosts();
         return posts; // NO. 7 DAFTAR POSTS TERBARU => get post
       } catch (error) {
@@ -56,8 +55,22 @@ const resolvers = {
       }
     },
 
-    postById: (_, args) => {
-      return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
+    postById: async (_, args) => {
+      // return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
+      try {
+        const { id } = args;
+        const post = await User.getUserById(id);
+
+        if (!post) {
+          throw new GraphQLError("Post not found", {
+            extensions: { code: "DATA_NOT_FOUND" },
+          });
+        }
+
+        return post;
+      } catch (error) {
+        throw error;
+      }
     },
   },
 
