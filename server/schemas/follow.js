@@ -1,5 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const Follow = require("../models/follow");
 
 const typeDefs = `#graphql
 
@@ -13,25 +14,22 @@ const typeDefs = `#graphql
 
   # END POINT
   type Mutation {
-    #follow
-    follow(followingId: ID, followerId: ID, createdAt: String, updatedAt: String) : Follow
+    follow(followingId: ID, followerId: ID) : Follow # return Follow?
   }
 `;
 
 const resolvers = {
   Mutation: {
-
-
-    follow: (_, args) => {
-      const { followingId, followerId, createdAt, updatedAt } = args;
-      let newFollow = { followingId: ID, followerId: ID, createdAt: String, updatedAt: String };
-      Likes.push(newFollow);
-      return newFollow;
+    follow: async (_, args) => {
+      try {
+        const { followingId, followerId } = args;
+        let newFollow = await Follow.follow(followingId, followerId);
+        return newFollow;
+      } catch (error) {
+        throw error;
+      }
     },
   },
 };
 
-
-
-
-module.exports = {typeDefs, resolvers}
+module.exports = { typeDefs, resolvers };

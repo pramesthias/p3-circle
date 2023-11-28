@@ -1,6 +1,5 @@
-const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
 const Post = require("../models/post");
+// const { authentication } = require("./middlewares/authentication"); // never read?
 
 const typeDefs = `#graphql
 
@@ -17,17 +16,26 @@ const typeDefs = `#graphql
   }
 
   type Comment {
-  content: String!
-  authorId: ID!
-  createdAt: String
-  updatedAt: String
+    content: String!
+    authorId: ID!
+    createdAt: String
+    updatedAt: String
+    # user: [User]
 }
 
-type Like {
-  authorId: ID!
-  createdAt: String
-  updatedAt: String
+  type Like {
+    authorId: ID!
+    createdAt: String
+    updatedAt: String
 }
+
+# type User {
+#     _id: ID
+#     name: String
+#     username: String!
+#     email: String!
+#     password: String!
+#   }
 
   # END POINT
   type Query {
@@ -35,31 +43,52 @@ type Like {
     postById(id: ID): Post
   }
 
+  input newComment {
+  content: String!
+  authorId: ID!
+}
+
+input newLike {
+  authorId: ID!
+}
+
+  input newPost {
+    content: String!
+    tags: [String]
+    imgUrl: String
+    #authorId: ID!
+    comments: [newComment]
+    likes: [newLike]
+  }
+
   type Mutation {
-    addPost(content: String, tags: String, imgUrl: String, authorId: ID, comments: String, likes: String, createdAt: String, updatedAt: String): Post
-    addComment(content: String, authorId: ID, createdAt: String, updatedAt: String): Comment
-    addLike(authorId: ID, createdAt: String, updatedAt: String): Like
+    addPost(post: newPost): String #WAIT => return String
+    addComment(content: String, authorId: ID): Comment
+    addLike(authorId: ID): Like
   }
 `;
 
 const resolvers = {
   Query: {
     posts: async (_, __, contextValue) => {
-      const user = await contextValue.authentication();
+      await contextValue.authentication(); // mati ?
 
       try {
-        const posts = await Post.allPosts();
-        return posts; // NO. 7 DAFTAR POSTS TERBARU => get post
+        const posts = await Post.allPosts(); // authorId: user.id
+        return posts;
       } catch (error) {
         throw error;
       }
     },
 
-    postById: async (_, args) => {
+    postById: async (_, args, contextValue) => {
       // return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
+
+      await contextValue.authentication();
+
       try {
         const { id } = args;
-        const post = await User.getUserById(id);
+        const post = await Post.getPostById(id);
 
         if (!post) {
           throw new GraphQLError("Post not found", {
@@ -75,41 +104,32 @@ const resolvers = {
   },
 
   Mutation: {
-    addPost: (_, args) => {
-      const {
-        content,
-        tags,
-        imgUrl,
-        authorId,
-        comments,
-        likes,
-        createdAt,
-        updatedAt,
-      } = args;
+    addPost: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
 
-      let newPost = {
-        // id: Posts.length + 1,
-        content,
-        tags,
-        imgUrl,
-        authorId,
-        comments,
-        likes,
-        createdAt,
-        updatedAt,
-      };
+      try {
+        const { content, tags, imgUrl, comments, likes } = args.post;
+        const authorId = user.id;
 
-      Posts.push(newPost);
-      return newPost;
+        await Post.addPost({
+          content,
+          tags,
+          imgUrl,
+          comments,
+          likes,
+          authorId,
+        });
+
+        return "Success add New Post";
+      } catch (error) {}
     },
 
-    addComment: (_, args) => {
-      const { content, authorId, createdAt, updatedAt } = args;
+    addComment: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
+      const { content, authorId } = args;
       let newComment = {
-        content: String,
-        authorId: ID,
-        createdAt: String,
-        updatedAt: String,
+        content,
+        authorId,
       };
       Comments.push(newComment);
       return newComment;
@@ -117,7 +137,7 @@ const resolvers = {
 
     addLike: (_, args) => {
       const { authorId, createdAt, updatedAt } = args;
-      let newLike = { authorId: ID, createdAt: String, updatedAt: String };
+      let newLike = { authorId };
       Likes.push(newLike);
       return newLike;
     },

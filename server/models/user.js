@@ -24,6 +24,7 @@ module.exports = class User {
       .findOne({ _id: new ObjectId(id) });
   }
 
+  // VALIDATION ???
   static async register(name, username, email, password) {
     if (password.length < 5) {
       throw new Error("Password should be at least 5 characters");
