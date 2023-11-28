@@ -38,13 +38,23 @@ type Like {
   type Mutation {
     addPost(content: String, tags: String, imgUrl: String, authorId: ID, comments: String, likes: String, createdAt: String, updatedAt: String): Post
     addComment(content: String, authorId: ID, createdAt: String, updatedAt: String): Comment
-    addLike(authorId: ID, createdAt: String, updatedAt: String): Like 
+    addLike(authorId: ID, createdAt: String, updatedAt: String): Like
   }
 `;
 
 const resolvers = {
   Query: {
-    posts: async () => {},
+    posts: async () => {
+      try {
+        // const db = await connect();
+        // const posts = db.collection("Posts");
+        // const arrPosts = await posts.find().toArray();
+        const posts = await Post.allPosts();
+        return posts; // NO. 7 DAFTAR POSTS TERBARU => get post
+      } catch (error) {
+        throw error;
+      }
+    },
 
     postById: (_, args) => {
       return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
@@ -65,15 +75,15 @@ const resolvers = {
       } = args;
 
       let newPost = {
-        id: Posts.length + 1,
-        content: String,
-        tags: [String],
-        imgUrl: String,
-        authorId: ID,
-        comments: [Comment],
-        likes: [Like],
-        createdAt: String,
-        updatedAt: String,
+        // id: Posts.length + 1,
+        content,
+        tags,
+        imgUrl,
+        authorId,
+        comments,
+        likes,
+        createdAt,
+        updatedAt,
       };
 
       Posts.push(newPost);

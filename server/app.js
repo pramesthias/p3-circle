@@ -31,6 +31,9 @@ connect()
     console.log("CONNECTED TO MONGODB");
     return startStandaloneServer(server, {
       listen: { port: 3000 },
+      context: () => {
+        return {};
+      },
     });
   })
   .then(({ url }) => {

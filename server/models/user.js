@@ -3,6 +3,12 @@ const { ObjectId } = require("mongodb");
 const { hashPassword } = require("../helpers/bcrypt");
 
 module.exports = class User {
+  static async findUsername(username) {
+    return getDb().collection("Users").findOne({
+      username: username,
+    });
+  }
+
   static async register(name, username, email, password) {
     const hashedPwd = hashPassword(password);
     const users = getDb().collection("Users"); //GETTERS DB
