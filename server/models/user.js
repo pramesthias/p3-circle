@@ -3,13 +3,19 @@ const { ObjectId } = require("mongodb");
 const { hashPassword } = require("../helpers/bcrypt");
 
 module.exports = class User {
-  //
-
-  // LOGIN & SEARCH
+  // LOGIN
   static async findUsername(username) {
     return getDb().collection("Users").findOne({
       username: username,
     });
+  }
+
+  // SEARCH
+  static async searchUsername(username) {
+    return getDb()
+      .collection("Users")
+      .find({ username: { $regex: username, $options: "i" } })
+      .toArray();
   }
 
   static async getUserById(id) {

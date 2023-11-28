@@ -18,7 +18,7 @@ type Token {
 
   # END POINT
   type Query {
-    searchUser(username: String): User #[User] display all
+    searchUser(username: String): [User] #[User] display all
     userById(id: ID): User
   }
 
@@ -30,11 +30,11 @@ type Token {
 
 const resolvers = {
   Query: {
-    // search by username
+    // search by username ??
     searchUser: async (_, args) => {
       try {
         const { username } = args;
-        const user = await User.findUsername(username); // 3 (SEARCH)
+        const user = await User.searchUsername(username); // 3 (SEARCH)
 
         if (!user) {
           throw new GraphQLError("User not found", {

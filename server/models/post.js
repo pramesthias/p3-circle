@@ -1,6 +1,7 @@
 const { getDb } = require("../config/mongo");
 
 module.exports = class Post {
+  // NEWEST POST
   static async allPosts() {
     return getDb().collection("Posts").find().toArray();
   }
