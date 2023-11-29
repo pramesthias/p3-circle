@@ -2,15 +2,14 @@ const { ObjectId } = require("mongodb");
 const { getDb } = require("../config/mongo");
 
 module.exports = class Post {
-  // NEWEST POST
+  // mengambil daftar post berdasarkan yang terbaru
   static async allPosts() {
-    return getDb().collection("Posts").find().toArray();
+    // return getDb().collection("Posts").find().toArray();
 
-    // mengambil daftar post berdasarkan yang terbaru
-    // return getDb()
-    //   .collection("Posts")
-    //   .aggregate([{ $sort: { createdAt: -1 } }])
-    //   .toArray();
+    return getDb()
+      .collection("Posts")
+      .aggregate([{ $sort: { createdAt: -1 } }])
+      .toArray();
   }
 
   static async getPostById(id) {
@@ -40,30 +39,33 @@ module.exports = class Post {
 
   // MUTATION:
   static async addPost(post) {
-    post.createdAt = new Date().toDateString(); // Wed 29 NOv 2023
-    post.updatedAt = new Date();
+    post.createdAt = new Date().toDateString();
+    post.updatedAt = new Date().toDateString();
     return getDb().collection("Posts").insertOne(post);
   }
 
   static async addComment(postId, comment) {
-    comment.createdAt = new Date().toDateString(); // Wed 29 NOv 2023
-    comment.updatedAt = new Date();
-    // return getDb().collection("Comments").insertOne(comment);
-    getDb()
+    comment.createdAt = new Date().toDateString();
+    comment.updatedAt = new Date().toDateString();
+
+    await getDb()
       .collection("Posts")
       .updateOne(
         { _id: new ObjectId(postId) },
         { $push: { comments: comment } }
       );
 
-    return comment; // Return the new comment
+    // return comment;
+    return await getDb()
+      .collection("Posts")
+      .findOne({ _id: new ObjectId(postId) });
   }
 
   // HANDLE LIKE
   static async addLike(postId, authorId) {
-    const date = new Date().toDateString(); // Wed 29 NOv 2023
+    const date = new Date().toDateString();
 
-    return getDb()
+    await getDb()
       .collection("Posts")
       .updateOne(
         { _id: new ObjectId(postId) },
@@ -77,5 +79,9 @@ module.exports = class Post {
           },
         }
       );
+
+    return await getDb()
+      .collection("Posts")
+      .findOne({ _id: new ObjectId(postId) });
   }
 };

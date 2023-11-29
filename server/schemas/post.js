@@ -63,10 +63,9 @@ const typeDefs = `#graphql
   }
 
   type Mutation {
-    addPost(post: newPost): String #WAIT => return String
-    # addComment(postId: String, content: String): Comment
-    addComment(postId: String, comment: newComment): Comment
-    addLike(postId: String): String
+    addPost(post: newPost): String # return String
+    addComment(postId: String, content: String): Post
+    addLike(postId: String): Post
   }
 `;
 
@@ -84,8 +83,6 @@ const resolvers = {
     },
 
     postById: async (_, args, contextValue) => {
-      // return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
-
       await contextValue.authentication();
 
       try {
@@ -132,24 +129,19 @@ const resolvers = {
       const user = await contextValue.authentication();
 
       try {
-        // const { postId, content } = args;
-        // const authorId = user.id;
-
-        // const comment = { content, authorId };
-
-        // let newComment = await Post.addComment(postId, comment);
-
-        // return newComment;
-
-        const { postId } = args;
-        const { content } = args.comment;
+        const { postId, content } = args;
         const authorId = user.id;
-
         const comment = { content, authorId };
 
         let newComment = await Post.addComment(postId, comment);
-
         return newComment;
+
+        // const { postId } = args;
+        // const { content } = args.comment;
+        // const authorId = user.id;
+        // const comment = { content, authorId };
+        // let newComment = await Post.addComment(postId, comment);
+        // return newComment;
       } catch (error) {
         throw error;
       }
@@ -161,15 +153,14 @@ const resolvers = {
         const { postId } = args;
         const authorId = user.id;
         let newLike = await Post.addLike(postId, authorId);
+        return newLike;
 
-        // return newLike;
-        return "Succes Like";
-
+        // return "Succes Like Post";
         // const { postId } = args;
         // const { authorId } = args.like;
         // const userId = user.id;
-
         // let newLike = await Post.addLike(postId, authorId: userId);
+        // return newLike;
       } catch (error) {
         throw error;
       }

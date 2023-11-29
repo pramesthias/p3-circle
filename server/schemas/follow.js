@@ -14,16 +14,21 @@ const typeDefs = `#graphql
 
   # END POINT
   type Mutation {
-    follow(followingId: ID, followerId: ID) : Follow # return Follow?
+    follow(followingId: ID): Follow 
   }
 `;
 
 const resolvers = {
   Mutation: {
-    follow: async (_, args) => {
+    follow: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
       try {
-        const { followingId, followerId } = args;
+        // follower: id kita, dari token
+        const { followingId } = args;
+        const followerId = user.id;
+
         let newFollow = await Follow.follow(followingId, followerId);
+
         return newFollow;
       } catch (error) {
         throw error;
