@@ -1,3 +1,4 @@
+const { GraphQLError } = require("graphql");
 const Post = require("../models/post");
 
 const typeDefs = `#graphql
@@ -13,6 +14,8 @@ const typeDefs = `#graphql
     likes: [Like]
     createdAt: String
     updatedAt: String
+    commentUsers: [User]
+    likeUsers: [User]
   }
 
   type Comment {
@@ -20,7 +23,6 @@ const typeDefs = `#graphql
     authorId: ID!
     createdAt: String
     updatedAt: String
-    # user: [User]
 }
 
   type Like {
@@ -29,18 +31,12 @@ const typeDefs = `#graphql
     updatedAt: String
 }
 
-# type User {
-#     _id: ID
-#     name: String
-#     username: String!
-#     email: String!
-#     password: String!
-#   }
-
-  # END POINT
-  type Query {
-    posts: [Post]
-    postById(id: ID): Post
+type User {
+    _id: ID
+    name: String
+    username: String!
+    #email: String!
+    #password: String!
   }
 
   input newComment {
@@ -60,6 +56,12 @@ const typeDefs = `#graphql
     comments: [newComment]
     likes: [newLike]
     #authorId: ID!
+  }
+
+  # END POINT
+  type Query {
+    posts: [Post]
+    postById(id: ID): Post
   }
 
   type Mutation {
@@ -87,7 +89,8 @@ const resolvers = {
 
       try {
         const { id } = args;
-        const post = await Post.getPostById(id);
+        // const post = await Post.getPostById(id);
+        const post = await Post.getPostIdName(id);
 
         if (!post) {
           throw new GraphQLError("Post not found", {

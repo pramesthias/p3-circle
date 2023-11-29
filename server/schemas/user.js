@@ -10,6 +10,15 @@ const typeDefs = `#graphql
     username: String!
     email: String!
     password: String!
+    followers: [Follow] # => aggregate
+  }
+
+  type Follow {
+    _id: ID
+    followingId: ID
+    followerId: ID   # follower: id kita, dari token
+    createdAt: String
+    updatedAt: String
   }
 
 type Token {
@@ -51,7 +60,8 @@ const resolvers = {
     userById: async (_, args) => {
       try {
         const { id } = args;
-        const user = await User.getUserById(id); // NO. 5 MENAMPILKAN PROFILE USER => get user
+        // const user = await User.getUserById(id); // NO. 5 MENAMPILKAN PROFILE USER USUAL
+        const user = await User.getUserById(id); // MENAMPILKAN PROFILE USER + FOLLOWERS
 
         if (!user) {
           throw new GraphQLError("User not found", {

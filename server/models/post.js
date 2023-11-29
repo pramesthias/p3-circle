@@ -4,12 +4,12 @@ const { getDb } = require("../config/mongo");
 module.exports = class Post {
   // mengambil daftar post berdasarkan yang terbaru
   static async allPosts() {
-    // return getDb().collection("Posts").find().toArray();
-
     return getDb()
       .collection("Posts")
       .aggregate([{ $sort: { createdAt: -1 } }])
       .toArray();
+
+    // return getDb().collection("Posts").find().toArray();
   }
 
   static async getPostById(id) {
@@ -20,7 +20,7 @@ module.exports = class Post {
 
   //  Menampilkan nama/username user pada data komentar
   static async getPostIdName(id) {
-    return getDb()
+    const post = await getDb()
       .collection("Posts")
       .aggregate([
         {
@@ -29,12 +29,25 @@ module.exports = class Post {
         {
           $lookup: {
             from: "Users",
-            localField: "authorId",
+            localField: "comments.authorId",
             foreignField: "_id",
-            as: "user",
+            as: "commentUsers",
           },
         },
-      ]);
+        {
+          $lookup: {
+            from: "Users",
+            localField: "likes.authorId",
+            foreignField: "_id",
+            as: "likeUsers",
+          },
+        },
+      ])
+      .toArray();
+
+    console.log(JSON.stringify(post[0], null, 2));
+
+    return post[0];
   }
 
   // MUTATION:

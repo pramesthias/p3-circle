@@ -7,7 +7,7 @@ const typeDefs = `#graphql
   type Follow {
     _id: ID
     followingId: ID
-    followerId: ID
+    followerId: ID   # follower: id kita, dari token
     createdAt: String
     updatedAt: String
   }
