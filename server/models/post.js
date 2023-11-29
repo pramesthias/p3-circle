@@ -44,4 +44,38 @@ module.exports = class Post {
     post.updatedAt = new Date();
     return getDb().collection("Posts").insertOne(post);
   }
+
+  static async addComment(postId, comment) {
+    comment.createdAt = new Date().toDateString(); // Wed 29 NOv 2023
+    comment.updatedAt = new Date();
+    // return getDb().collection("Comments").insertOne(comment);
+    getDb()
+      .collection("Posts")
+      .updateOne(
+        { _id: new ObjectId(postId) },
+        { $push: { comments: comment } }
+      );
+
+    return comment; // Return the new comment
+  }
+
+  // HANDLE LIKE
+  static async addLike(postId, authorId) {
+    const date = new Date().toDateString(); // Wed 29 NOv 2023
+
+    return getDb()
+      .collection("Posts")
+      .updateOne(
+        { _id: new ObjectId(postId) },
+        {
+          $addToSet: {
+            likes: {
+              authorId,
+              createdAt: date,
+              updatedAt: date,
+            },
+          },
+        }
+      );
+  }
 };

@@ -1,8 +1,8 @@
 const Post = require("../models/post");
-// const { authentication } = require("./middlewares/authentication"); // never read?
 
 const typeDefs = `#graphql
 
+#representing returned data
   type Post {
     _id: ID
     content: String!
@@ -44,34 +44,36 @@ const typeDefs = `#graphql
   }
 
   input newComment {
-  content: String!
-  authorId: ID!
-}
+    content: String!
+    # authorId: ID!
+  }
 
-input newLike {
-  authorId: ID!
-}
+  input newLike {
+    authorId: ID!
+  }
 
-  input newPost {
+#represent the structure of data to be provided, not returned.
+  input newPost { 
     content: String!
     tags: [String]
     imgUrl: String
-    #authorId: ID!
     comments: [newComment]
     likes: [newLike]
+    #authorId: ID!
   }
 
   type Mutation {
     addPost(post: newPost): String #WAIT => return String
-    addComment(content: String, authorId: ID): Comment
-    addLike(authorId: ID): Like
+    # addComment(postId: String, content: String): Comment
+    addComment(postId: String, comment: newComment): Comment
+    addLike(postId: String): String
   }
 `;
 
 const resolvers = {
   Query: {
     posts: async (_, __, contextValue) => {
-      await contextValue.authentication(); // mati ?
+      await contextValue.authentication();
 
       try {
         const posts = await Post.allPosts(); // authorId: user.id
@@ -121,25 +123,56 @@ const resolvers = {
         });
 
         return "Success add New Post";
-      } catch (error) {}
+      } catch (error) {
+        throw error;
+      }
     },
 
     addComment: async (_, args, contextValue) => {
       const user = await contextValue.authentication();
-      const { content, authorId } = args;
-      let newComment = {
-        content,
-        authorId,
-      };
-      Comments.push(newComment);
-      return newComment;
+
+      try {
+        // const { postId, content } = args;
+        // const authorId = user.id;
+
+        // const comment = { content, authorId };
+
+        // let newComment = await Post.addComment(postId, comment);
+
+        // return newComment;
+
+        const { postId } = args;
+        const { content } = args.comment;
+        const authorId = user.id;
+
+        const comment = { content, authorId };
+
+        let newComment = await Post.addComment(postId, comment);
+
+        return newComment;
+      } catch (error) {
+        throw error;
+      }
     },
 
-    addLike: (_, args) => {
-      const { authorId, createdAt, updatedAt } = args;
-      let newLike = { authorId };
-      Likes.push(newLike);
-      return newLike;
+    addLike: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
+      try {
+        const { postId } = args;
+        const authorId = user.id;
+        let newLike = await Post.addLike(postId, authorId);
+
+        // return newLike;
+        return "Succes Like";
+
+        // const { postId } = args;
+        // const { authorId } = args.like;
+        // const userId = user.id;
+
+        // let newLike = await Post.addLike(postId, authorId: userId);
+      } catch (error) {
+        throw error;
+      }
     },
   },
 };
