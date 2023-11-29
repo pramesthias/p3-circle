@@ -9,8 +9,11 @@ const typeDefs = `#graphql
     name: String
     username: String!
     email: String!
-    password: String!
+    # password: String!
     followers: [Follow] # => aggregate
+    following: [Follow] # => aggregate
+    followersName: [User]
+    followingName: [User]
   }
 
   type Follow {
@@ -28,7 +31,7 @@ type Token {
   # END POINT
   type Query {
     searchUser(username: String): [User] #[User] display all
-    userById(id: ID): User
+    userById: User
   }
 
   type Mutation {
@@ -40,7 +43,8 @@ type Token {
 const resolvers = {
   Query: {
     // search by username ??
-    searchUser: async (_, args) => {
+    searchUser: async (_, args, contextValue) => {
+      await contextValue.authentication();
       try {
         const { username } = args;
         const user = await User.searchUsername(username); // 3 (SEARCH)
@@ -57,19 +61,22 @@ const resolvers = {
       }
     },
 
-    userById: async (_, args) => {
+    userById: async (_, __, contextValue) => {
+      const user = await contextValue.authentication();
       try {
-        const { id } = args;
-        // const user = await User.getUserById(id); // NO. 5 MENAMPILKAN PROFILE USER USUAL
-        const user = await User.getUserById(id); // MENAMPILKAN PROFILE USER + FOLLOWERS
+        // usr id = token
+        // const { id } = args;
+        // const user = await User.getUserById(id); // NO. 5 MENAMPILKAN PROFILE USER
 
-        if (!user) {
+        const users = await User.getUserIdName(user.id); // MENAMPILKAN PROFILE USER + FOLLOWERS
+
+        if (!users) {
           throw new GraphQLError("User not found", {
             extensions: { code: "DATA_NOT_FOUND" },
           });
         }
 
-        return user;
+        return users;
         // return Users.find((u) => u.id == args.id);
       } catch (error) {
         throw error;

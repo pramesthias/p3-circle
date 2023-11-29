@@ -5,14 +5,14 @@ const { hashPassword } = require("../helpers/bcrypt");
 module.exports = class User {
   // LOGIN
   static async findUsername(username) {
-    return getDb().collection("Users").findOne({
+    return await getDb().collection("Users").findOne({
       username: username,
     });
   }
 
   // SEARCH
   static async searchUsername(username) {
-    return getDb()
+    return await getDb()
       .collection("Users")
       .find({ username: { $regex: username, $options: "i" } })
       .toArray();
@@ -22,6 +22,54 @@ module.exports = class User {
     return getDb()
       .collection("Users")
       .findOne({ _id: new ObjectId(id) });
+  }
+
+  //Menampilkan nama/username following/followers
+  static async getUserIdName(id) {
+    const user = await getDb()
+      .collection("Users")
+      .aggregate([
+        {
+          $match: { _id: new ObjectId(id) },
+        },
+        {
+          $lookup: {
+            from: "Follows",
+            localField: "_id",
+            foreignField: "followingId",
+            as: "followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "Follows",
+            localField: "_id",
+            foreignField: "followerId",
+            as: "following",
+          },
+        },
+        {
+          $lookup: {
+            from: "Users",
+            localField: "followers.followerId", //"followers.followingId"
+            foreignField: "_id",
+            as: "followersName",
+          },
+        },
+        {
+          $lookup: {
+            from: "Users",
+            localField: "following.followingId",
+            foreignField: "_id",
+            as: "followingName",
+          },
+        },
+      ])
+      .toArray();
+
+    // console.log(JSON.stringify(user[0], null, 2));
+
+    return user[0];
   }
 
   // VALIDATION

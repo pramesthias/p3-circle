@@ -5,12 +5,14 @@ module.exports = class Follow {
   static async follow(followingId, followerId) {
     const date = new Date().toDateString(); // .toISOString(); ???
 
-    const follow = await getDb().collection("Follows").insertOne({
-      followingId,
-      followerId,
-      createdAt: date,
-      updatedAt: date,
-    });
+    const follow = await getDb()
+      .collection("Follows")
+      .insertOne({
+        followingId: new ObjectId(followingId),
+        followerId,
+        createdAt: date,
+        updatedAt: date,
+      });
 
     return await getDb()
       .collection("Follows")
