@@ -9,11 +9,11 @@ const typeDefs = `#graphql
     name: String
     username: String!
     email: String!
-    # password: String!
-    followers: [Follow] # => aggregate
-    following: [Follow] # => aggregate
-    followersName: [User]
-    followingName: [User]
+    password: String!
+    followers: [Follow] 
+    following: [Follow] 
+    followersName: [UserFollow]
+    followingName: [UserFollow]
   }
 
   type Follow {
@@ -22,6 +22,12 @@ const typeDefs = `#graphql
     followerId: ID   # follower: id kita, dari token
     createdAt: String
     updatedAt: String
+  }
+
+  type UserFollow {
+    _id: ID
+    name: String
+    username: String
   }
 
 type Token {

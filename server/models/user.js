@@ -90,8 +90,7 @@ module.exports = class User {
       throw new Error("Email must be unique");
     }
 
-    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailFormat.test(email)) {
+    if (!email.match(/@/)) {
       throw new Error("Invalid email format");
     }
 
@@ -102,6 +101,10 @@ module.exports = class User {
       username,
       email,
       password: hashedPwd,
+      followers: [],
+      following: [],
+      followersName: [],
+      followingName: [],
     });
 
     const newUser = await getDb()

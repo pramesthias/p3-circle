@@ -9,7 +9,7 @@ module.exports = class Post {
       .aggregate([{ $sort: { createdAt: -1 } }])
       .toArray();
 
-    // return getDb().collection("Posts").find().toArray();
+    // return getDb().collection("Posts").find().toArray(); => find(query)
   }
 
   static async getPostById(id) {
@@ -45,18 +45,28 @@ module.exports = class Post {
       ])
       .toArray();
 
-    console.log(JSON.stringify(post[0], null, 2));
-
     return post[0];
+
+    // console.log(JSON.stringify(post[0], null, 2));
   }
 
   // MUTATION:
   static async addPost(post) {
-    post.createdAt = new Date().toDateString();
-    post.updatedAt = new Date().toDateString();
-    return getDb().collection("Posts").insertOne(post);
+    post.createdAt = new Date().toISOString(); // toDateString()
+    post.updatedAt = new Date().toISOString(); // + .substring(0, 10) / split("T")[0]
+    post.comments = [];
+    post.likes = [];
+    post.commentUsers = [];
+    post.likeUsers = [];
+
+    const newPost = await getDb().collection("Posts").insertOne(post);
+
+    return await getDb()
+      .collection("Posts")
+      .findOne({ _id: new ObjectId(newPost.insertedId) });
   }
 
+  // HANDLE ADD COMMENT
   static async addComment(postId, comment) {
     comment.createdAt = new Date().toDateString();
     comment.updatedAt = new Date().toDateString();

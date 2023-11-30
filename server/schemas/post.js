@@ -1,5 +1,6 @@
 const { GraphQLError } = require("graphql");
 const Post = require("../models/post");
+const redis = require("../config/redis");
 
 const typeDefs = `#graphql
 
@@ -14,8 +15,8 @@ const typeDefs = `#graphql
     likes: [Like]
     createdAt: String
     updatedAt: String
-    commentUsers: [User]
-    likeUsers: [User]
+    commentUsers: [UserPost]
+    likeUsers: [UserPost]
   }
 
   type Comment {
@@ -31,30 +32,32 @@ const typeDefs = `#graphql
     updatedAt: String
 }
 
-type User {
+type UserPost {
     _id: ID
     name: String
     username: String
   }
 
-  input newComment {
-    content: String!
-    # authorId: ID!
-  }
 
-  input newLike {
-    authorId: ID!
-  }
 
 #represent the structure of data to be provided, not returned.
   input newPost { 
     content: String!
     tags: [String]
     imgUrl: String
-    comments: [newComment]
-    likes: [newLike]
-    #authorId: ID!
+    # comments: [newComment]
+    # likes: [newLike]
+    # authorId: ID!
   }
+
+  # input newComment {
+  #   content: String!
+  #   authorId: ID!
+  # }
+
+  # input newLike {
+  #   authorId: ID!
+  # }
 
   # END POINT
   type Query {
@@ -63,20 +66,35 @@ type User {
   }
 
   type Mutation {
-    addPost(post: newPost): String # return String
-    addComment(postId: String, content: String): Post
+    addPost(post: newPost): Post # return String
+    addComment(postId: String, content: String!): Post
     addLike(postId: String): Post
   }
 `;
 
 const resolvers = {
   Query: {
+    // Implementasikan cache pada Get Post (Query)
     posts: async (_, __, contextValue) => {
-      await contextValue.authentication();
+      const user = await contextValue.authentication(); // user =
 
       try {
-        const posts = await Post.allPosts(); // authorId: user.id
-        return posts;
+        // const postCache = await redis.get("post:all");
+        const postCache = await redis.get(`${user.id}:post:all`); //"post:all" => entitas:all
+        let result;
+
+        if (postCache) {
+          result = JSON.parse(postCache);
+          console.log("FROM CACHE");
+        } else {
+          const posts = await Post.allPosts(); // {authorId: user.id}
+          await redis.set(`${user.id}:post:all`, JSON.stringify(posts));
+          result = posts;
+          console.log("FROM MONGODB");
+          // await redis.set("post:all", JSON.stringify(posts));
+        }
+
+        return result;
       } catch (error) {
         throw error;
       }
@@ -104,6 +122,7 @@ const resolvers = {
   },
 
   Mutation: {
+    // Invalidate cache pada Add Post (Mutation)
     addPost: async (_, args, contextValue) => {
       const user = await contextValue.authentication();
 
@@ -111,7 +130,7 @@ const resolvers = {
         const { content, tags, imgUrl, comments, likes } = args.post;
         const authorId = user.id;
 
-        await Post.addPost({
+        const post = await Post.addPost({
           content,
           tags,
           imgUrl,
@@ -120,7 +139,11 @@ const resolvers = {
           authorId,
         });
 
-        return "Success add New Post";
+        // cache invalidation
+        await redis.del(`${user.id}:post:all`);
+
+        return post;
+        // await redis.del("post:all");
       } catch (error) {
         throw error;
       }
