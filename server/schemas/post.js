@@ -19,19 +19,19 @@ const typeDefs = `#graphql
     likeUsers: [UserPost] #
   }
 
-  type PostDetail {
-    _id: ID
-    content: String!
-    tags: [String]
-    imgUrl: String
-    authorId: ID!
-    comments: [Comment]
-    likes: [Like]
-    createdAt: String
-    updatedAt: String
-    commentUsers: [UserPost]  #project password = 0
-    likeUsers: [UserPost]
-  }
+  # type PostDetail {
+  #   _id: ID
+  #   content: String!
+  #   tags: [String]
+  #   imgUrl: String
+  #   authorId: ID!
+  #   comments: [Comment]
+  #   likes: [Like]
+  #   createdAt: String
+  #   updatedAt: String
+  #   commentUsers: [UserPost]  #project password = 0
+  #   likeUsers: [UserPost]
+  # }
 
   type Comment {
     content: String!

@@ -1,366 +1,134 @@
+import { ScrollView } from "react-native";
+
 export default function Template() {
   return (
-    // ====== LOGIN FORM =======
-    <ScrollView style={{ flex: 1, backgroundColor: "whitesmoke" }}>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 100, //here top margin
-        }}
-      >
-        <Image
-          source={require("../img/logo.png")}
-          style={{ width: 280, height: 280 }}
-        />
-        {/* <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 }}>
-     Login
-   </Text> */}
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 20 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="mail" size={30} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 15,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Email Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 20 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="lock-closed" size={30} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 15,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Password Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "darkgreen",
-          paddingVertical: 14,
-          marginTop: 30,
-          marginHorizontal: 30,
-          borderRadius: 50,
-          elevation: 2,
-        }}
-      >
-        <Text
-          style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-        >
-          LOGIN
-        </Text>
-      </TouchableOpacity>
-      <View style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}>
-        <Text>Do not have an account? </Text>
-        <TouchableOpacity>
-          <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-      {/* </ScrollView> =>  ACTIVATE WHEN CHANGED*/}
+    <ScrollView>
       {/* ====== REGISTER FORM ======= */}
-      {/* <ScrollView style={{ flex: 1, backgroundColor: "whitesmoke" }}> =>  ACTIVATE WHEN CHANGED */}
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 60,
-        }}
-      >
-        <Image
-          source={require("../img/logo.png")}
-          style={{ width: 250, height: 250 }}
-        />
-        {/* <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 }}>
-     Login
-   </Text> */}
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <MaterialIcons name="font-download" size={25} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Name Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="at-circle" size={25} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Username Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="mail" size={25} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Email Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <View
-        style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="lock-closed" size={25} color="black" />
-        </View>
-
-        <TextInput
-          // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
-          placeholder="Your Password Here"
-          // onChangeText={(text) => setFormData(text)}
-        />
-      </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "darkgreen",
-          paddingVertical: 14,
-          marginTop: 30,
-          marginHorizontal: 30,
-          borderRadius: 50,
-          elevation: 2,
-        }}
-      >
-        <Text
-          style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-        >
-          SIGN UP
-        </Text>
-      </TouchableOpacity>
-      <View style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}>
-        <Text>Already have an account? </Text>
-        <TouchableOpacity>
-          <Text style={{ fontWeight: "bold" }}>Login</Text>
-        </TouchableOpacity>
-      </View>
-      {/* </ScrollView> => ACTIVATE LATER */}
 
       {/* ====== USER DETAIL ======== */}
-      <View style={{ flex: 1, backgroundColor: "honeydew" }}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image
-            source={require("....")}
-            style={{
-              width: 300,
-              height: 300,
-              borderRadius: 25,
-              marginTop: 80,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 30,
+      <View style={{ flex: 1 }}>
+        <ImageBackground
+          source={{
+            uri: "https://wallpapers.com/images/high/blue-green-aesthetic-8wspuig34zq5c323.webp",
           }}
+          style={{ flex: 1 }}
         >
-          <Text
-            style={{ fontSize: 35, fontWeight: "bold", color: "darkgreen" }}
-          >
-            NAMA USER
-          </Text>
-          <Text style={{ fontSize: 28, color: "darkgreen" }}>
-            username / email
-          </Text>
-        </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              // source={require("../img/tes.jpg")}
+              source={{
+                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL4GBnSDjUWXBI08tL0Xj_BuFqu3iZEXW3wnAV4_GfX9-klTFV9IczV-RmW3UrK0Pvp0I&usqp=CAU",
+              }}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: 100,
+                marginTop: 70,
+              }}
+            />
+          </View>
 
-        <View style={{ flexDirection: "row", marginTop: 40 }}>
-          <TouchableOpacity
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text style={{ color: "darkgreen" }}>FOLLOWER</Text>
-            <Text
-              style={{ fontSize: 18, fontWeight: "bold", color: "darkgreen" }}
-            >
-              1110
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text style={{ color: "darkgreen" }}>FOLLOWING</Text>
-            <Text
-              style={{ fontSize: 18, fontWeight: "bold", color: "darkgreen" }}
-            >
-              1110
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{ flexDirection: "row", marginTop: 40 }}>
-          <TouchableOpacity
+          <View
             style={{
-              flex: 1,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "darkgreen",
-              paddingVertical: 10,
-              marginLeft: 20,
-              marginRight: 10,
-              borderRadius: 15,
+              marginTop: 30,
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-              Add Friend
+            <Text
+              style={{
+                fontSize: 35,
+                fontWeight: "bold",
+                color: "darkgreen",
+              }}
+            >
+              NAMA USER
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "darkgreen",
-              paddingVertical: 10,
-              marginLeft: 10,
-              marginRight: 20,
-              borderRadius: 15,
-            }}
+            <Text style={{ fontSize: 28, color: "darkgreen" }}>
+              username / email
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: "row", marginTop: 40 }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "darkslategrey" }}>FOLLOWER</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "darkslategrey",
+                }}
+              >
+                1110
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "darkslategrey" }}>FOLLOWING</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "darkslategrey",
+                }}
+              >
+                1110
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{ flexDirection: "row", marginTop: 40, marginBottom: 20 }}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-              Log Out
-            </Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "darkcyan",
+                paddingVertical: 10,
+                marginLeft: 20,
+                marginRight: 10,
+                borderRadius: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", color: "white" }}
+              >
+                Add Friend
+              </Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "seagreen",
+                paddingVertical: 10,
+                marginLeft: 10,
+                marginRight: 20,
+                borderRadius: 15,
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", color: "white" }}
+              >
+                Log Out
+              </Text>
+            </TouchableOpacity> */}
+          </View>
+        </ImageBackground>
       </View>
     </ScrollView> // NOT USED IN USER DETAIL
   );

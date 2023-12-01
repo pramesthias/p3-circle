@@ -20,8 +20,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
+import LogoutButton from "../components/LogoutButton";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen</Text>
@@ -29,6 +30,7 @@ export default function HomeScreen() {
         title="Go to Details"
         onPress={() => navigation.navigate("Details")}
       />
+      {/* <LogoutButton /> */}
     </View>
   );
 }
