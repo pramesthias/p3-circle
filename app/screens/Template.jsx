@@ -272,6 +272,96 @@ export default function Template() {
         </TouchableOpacity>
       </View>
       {/* </ScrollView> => ACTIVATE LATER */}
+
+      {/* ====== USER DETAIL ======== */}
+      <View style={{ flex: 1, backgroundColor: "honeydew" }}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Image
+            source={require("....")}
+            style={{
+              width: 300,
+              height: 300,
+              borderRadius: 25,
+              marginTop: 80,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 30,
+          }}
+        >
+          <Text
+            style={{ fontSize: 35, fontWeight: "bold", color: "darkgreen" }}
+          >
+            NAMA USER
+          </Text>
+          <Text style={{ fontSize: 28, color: "darkgreen" }}>
+            username / email
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: "row", marginTop: 40 }}>
+          <TouchableOpacity
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={{ color: "darkgreen" }}>FOLLOWER</Text>
+            <Text
+              style={{ fontSize: 18, fontWeight: "bold", color: "darkgreen" }}
+            >
+              1110
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={{ color: "darkgreen" }}>FOLLOWING</Text>
+            <Text
+              style={{ fontSize: 18, fontWeight: "bold", color: "darkgreen" }}
+            >
+              1110
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flexDirection: "row", marginTop: 40 }}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "darkgreen",
+              paddingVertical: 10,
+              marginLeft: 20,
+              marginRight: 10,
+              borderRadius: 15,
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+              Add Friend
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "darkgreen",
+              paddingVertical: 10,
+              marginLeft: 10,
+              marginRight: 20,
+              borderRadius: 15,
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+              Log Out
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </ScrollView> // NOT USED IN USER DETAIL
   );
 }
