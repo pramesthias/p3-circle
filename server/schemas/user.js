@@ -16,6 +16,19 @@ const typeDefs = `#graphql
     followingName: [UserFollow]
   }
 
+
+  type UserDetail { #user by id
+    _id: ID
+    name: String
+    username: String!
+    email: String!
+    password: String! #project, esclude
+    followers: [Follow] 
+    following: [Follow] 
+    followersName: [UserFollow]
+    followingName: [UserFollow]
+  }
+
   type Follow {
     _id: ID
     followingId: ID
@@ -37,7 +50,7 @@ type Token {
   # END POINT
   type Query {
     searchUser(username: String): [User] #[User] display all
-    userById: User
+    userById: User  #UserDetail
   }
 
   type Mutation {
