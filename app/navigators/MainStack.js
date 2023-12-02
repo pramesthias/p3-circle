@@ -11,6 +11,8 @@ import Register from "../screens/Register";
 import LogoutButton from "../components/LogoutButton";
 import Logo from "../components/Logo";
 import TabNav from "./TabNav";
+import PostDetail from "../screens/PostDetail";
+import Comment from "../screens/Comment";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,26 @@ export default function MainStack() {
             <Stack.Screen
               name="Main"
               component={TabNav}
+              options={() => {
+                return {
+                  headerTitle: () => <Logo />,
+                  headerRight: () => <LogoutButton />,
+                };
+              }}
+            />
+            <Stack.Screen
+              name="PostDetail"
+              component={PostDetail}
+              options={() => {
+                return {
+                  headerTitle: () => <Logo />,
+                  headerRight: () => <LogoutButton />,
+                };
+              }}
+            />
+            <Stack.Screen
+              name="Comment"
+              component={Comment}
               options={() => {
                 return {
                   headerTitle: () => <Logo />,

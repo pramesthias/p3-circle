@@ -98,4 +98,4 @@ Lakukan komunikasi Aplikasi Mobile (react-native) menggunakan apollo client ke s
 - [x] Search User (Query)
 - [x] Follow (Mutation)
 - [ ] Get User (Query)
-- [ ] Like Post (Mutation)
+- [x] Like Post (Mutation)

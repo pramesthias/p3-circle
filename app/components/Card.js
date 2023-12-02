@@ -8,6 +8,7 @@ export default function Card({ post, navigation }) {
       onPress={() => {
         navigation.navigate("PostDetail", {
           id: post.id,
+          post,
         });
       }}
     >
@@ -39,12 +40,10 @@ export default function Card({ post, navigation }) {
           >
             <View style={{ marginLeft: 20 }}>
               <Ionicons name="heart-circle" size={35} color="black" />
-              <Text style={{ marginLeft: 15 }}>{post.likes.length}</Text>
             </View>
 
             <View style={{ marginRight: 20 }}>
               <MaterialIcons name="comment" size={34} color="black" />
-              <Text style={{ marginLeft: 15 }}>{post.comments.length}</Text>
             </View>
           </View>
         </View>
