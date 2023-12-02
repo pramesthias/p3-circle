@@ -1,9 +1,10 @@
-const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
-const Post = require("../models/post")
+const { GraphQLError } = require("graphql");
+const Post = require("../models/post");
+const redis = require("../config/redis");
 
 const typeDefs = `#graphql
 
+#representing returned data
   type Post {
     _id: ID
     content: String!
@@ -14,94 +15,191 @@ const typeDefs = `#graphql
     likes: [Like]
     createdAt: String
     updatedAt: String
+    commentUsers: [UserPost]  #
+    likeUsers: [UserPost] #
+    user: UserPost #
   }
 
+  # type PostDetail {
+  #   _id: ID
+  #   content: String!
+  #   tags: [String]
+  #   imgUrl: String
+  #   authorId: ID!
+  #   comments: [Comment]
+  #   likes: [Like]
+  #   createdAt: String
+  #   updatedAt: String
+  #   commentUsers: [UserPost]  #project password = 0
+  #   likeUsers: [UserPost]
+  # }
+
   type Comment {
-  content: String!
-  authorId: ID!
-  createdAt: String
-  updatedAt: String
+    content: String!
+    authorId: ID!
+    createdAt: String
+    updatedAt: String
 }
 
-type Like {
-  authorId: ID!
-  createdAt: String
-  updatedAt: String
+  type Like {
+    authorId: ID!
+    createdAt: String
+    updatedAt: String
 }
+
+type UserPost {
+    _id: ID
+    name: String
+    username: String
+  }
+
+#represent the structure of data to be provided, not returned.
+  input newPost { 
+    content: String!
+    tags: [String]
+    imgUrl: String
+    # comments: [newComment]
+    # likes: [newLike]
+    # authorId: ID!
+  }
+
+  # input newComment {
+  #   content: String!
+  #   authorId: ID!
+  # }
+
+  # input newLike {
+  #   authorId: ID!
+  # }
 
   # END POINT
   type Query {
     posts: [Post]
-    postById(id: ID): Post
+    postById(id: ID): Post  #PostDetail
   }
 
   type Mutation {
-    addPost(content: String, tags: String, imgUrl: String, authorId: ID, comments: String, likes: String, createdAt: String, updatedAt: String): Post
-    addComment(content: String, authorId: ID, createdAt: String, updatedAt: String): Comment
-    addLike(authorId: ID, createdAt: String, updatedAt: String): Like 
+    addPost(post: newPost): Post # return String
+    addComment(postId: String, content: String!): Post
+    addLike(postId: String): Post
   }
 `;
 
 const resolvers = {
   Query: {
-    posts: async () => {
-      // const db = await connect();
-      // const posts = db.collection("Posts");
-      // const arrPosts = await posts.find().toArray();
-      const arrPosts = await Post.allPosts()
-      return arrPosts; // NO. 7 DAFTAR POSTS TERBARU => get post
+    // Implementasikan cache pada Get Post (Query)
+    posts: async (_, __, contextValue) => {
+      const user = await contextValue.authentication(); // user =
+
+      try {
+        // const postCache = await redis.get("post:all");
+        const postCache = await redis.get(`${user.id}:post:all`); //"post:all" => entitas:all
+        let result;
+
+        // if (postCache) {
+        if (false) {
+          result = JSON.parse(postCache);
+          console.log("FROM CACHE");
+        } else {
+          const posts = await Post.allPosts(); // {authorId: user.id}
+          await redis.set(`${user.id}:post:all`, JSON.stringify(posts));
+          result = posts;
+          console.log("FROM MONGODB");
+          // await redis.set("post:all", JSON.stringify(posts));
+        }
+
+        return result;
+      } catch (error) {
+        throw error;
+      }
     },
-    postById: (_, args) => {
-      return Posts.find((p) => p.id == args.id); // NO. 8 Get POST by ID
+
+    postById: async (_, args, contextValue) => {
+      await contextValue.authentication();
+
+      try {
+        const { id } = args;
+        // const post = await Post.getPostById(id);
+        const post = await Post.getPostIdName(id);
+
+        if (!post) {
+          throw new GraphQLError("Post not found", {
+            extensions: { code: "DATA_NOT_FOUND" },
+          });
+        }
+
+        return post;
+      } catch (error) {
+        throw error;
+      }
     },
   },
 
   Mutation: {
-    addPost: (_, args) => {
-      const {
-        content,
-        tags,
-        imgUrl,
-        authorId,
-        comments,
-        likes,
-        createdAt,
-        updatedAt,
-      } = args;
+    // Invalidate cache pada Add Post (Mutation)
+    addPost: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
 
-      let newPost = {
-        id: Posts.length + 1,
-        content: String,
-        tags: [String],
-        imgUrl: String,
-        authorId: ID,
-        comments: [Comment],
-        likes: [Like],
-        createdAt: String,
-        updatedAt: String,
-      };
+      try {
+        const { content, tags, imgUrl } = args.post;
+        const authorId = user.id;
 
-      Posts.push(newPost);
-      return newPost;
+        const post = await Post.addPost({
+          content,
+          tags,
+          imgUrl,
+          authorId,
+        });
+
+        // cache invalidation
+        await redis.del(`${user.id}:post:all`);
+
+        return post;
+        // await redis.del("post:all");
+      } catch (error) {
+        throw error;
+      }
     },
 
-    addComment: (_, args) => {
-      const { content, authorId, createdAt, updatedAt } = args;
-      let newComment = {
-        content: String,
-        authorId: ID,
-        createdAt: String,
-        updatedAt: String,
-      };
-      Comments.push(newComment);
-      return newComment;
+    addComment: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
+
+      try {
+        const { postId, content } = args;
+        const authorId = user.id;
+        const comment = { content, authorId };
+
+        let newComment = await Post.addComment(postId, comment);
+        return newComment;
+
+        // const { postId } = args;
+        // const { content } = args.comment;
+        // const authorId = user.id;
+        // const comment = { content, authorId };
+        // let newComment = await Post.addComment(postId, comment);
+        // return newComment;
+      } catch (error) {
+        throw error;
+      }
     },
 
-    addLike: (_, args) => {
-      const { authorId, createdAt, updatedAt } = args;
-      let newLike = { authorId: ID, createdAt: String, updatedAt: String };
-      Likes.push(newLike);
-      return newLike;
+    addLike: async (_, args, contextValue) => {
+      const user = await contextValue.authentication();
+      try {
+        const { postId } = args;
+        const authorId = user.id;
+        let newLike = await Post.addLike(postId, authorId);
+        return newLike;
+
+        // return "Succes Like Post";
+        // const { postId } = args;
+        // const { authorId } = args.like;
+        // const userId = user.id;
+        // let newLike = await Post.addLike(postId, authorId: userId);
+        // return newLike;
+      } catch (error) {
+        throw error;
+      }
     },
   },
 };

@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { connect } = require("./config/mongo");
+const { authentication } = require("./middlewares/authentication");
 
 const {
   typeDefs: userTypeDefs,
@@ -31,6 +32,11 @@ connect()
     console.log("CONNECTED TO MONGODB");
     return startStandaloneServer(server, {
       listen: { port: 3000 },
+      context: ({ req }) => {
+        return {
+          authentication: () => authentication(req),
+        };
+      },
     });
   })
   .then(({ url }) => {
