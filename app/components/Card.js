@@ -22,15 +22,14 @@ export default function Card() {
           }}
           style={styles.postImage}
         />
-        <View style={styles.caption}>
-          <Text>
-            abcddddddddddddddddddddddddddddddddddddddddddddddkdsfjldsjgflkdsjgkldsjklhflhasihfiasjdoODWJLRIFWJOI
-          </Text>
+        <View style={styles.content}>
+          <Text>abcdddddddddddddddddddddsjgfDWJLRIFWJOI</Text>
           <TouchableOpacity
             // onPress={handleLike}
             style={{ alignItems: "center" }}
           >
             <Ionicons name="heart-circle" size={35} color="black" />
+            <Text>COUNT 11</Text>
           </TouchableOpacity>
           {/* <Text>Likes:</Text> */}
         </View>
@@ -41,7 +40,7 @@ export default function Card() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    margin: 20,
     borderWidth: 1,
     borderColor: "lightcyan",
     borderRadius: 10,

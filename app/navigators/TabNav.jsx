@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Users from "../screens/Users";
+import PostDetail from "../screens/PostDetail";
 
 export default function TabNav() {
   // const [formData, setFormData] = useState(')
@@ -28,7 +29,7 @@ export default function TabNav() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Add") {
             iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === "Users") {
+          } else if (route.name === "Search") {
             iconName = focused ? "search-circle" : "search-circle-outline";
           } else if (route.name === "User") {
             iconName = focused ? "person" : "person-outline";
@@ -60,7 +61,7 @@ export default function TabNav() {
         }}
       />
       <Tab.Screen
-        name="Users"
+        name="Search"
         component={Users}
         options={() => {
           return {

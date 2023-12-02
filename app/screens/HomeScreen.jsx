@@ -22,22 +22,12 @@ const Tab = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
 import LogoutButton from "../components/LogoutButton";
 
-import { useWindowDimensions } from "react-native"; // => ADD FORM POST
 import Card from "../components/Card";
 
-export default function HomeScreen() {
-  const { height, width } = useWindowDimensions(); // => ADD FORM POST
-
+export default function HomeScreen({ navigation }) {
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <ImageBackground
-        source={{
-          uri: "https://wallpapers.com/images/high/blue-green-aesthetic-8wspuig34zq5c323.webp",
-        }}
-        style={{ flex: 1, height: height }}
-      >
-        <Card />
-      </ImageBackground>
+    <ScrollView style={{ flex: 1, backgroundColor: "honeydew" }}>
+      <Card />
     </ScrollView>
   );
 }
