@@ -17,6 +17,7 @@ const typeDefs = `#graphql
     updatedAt: String
     commentUsers: [UserPost]  #
     likeUsers: [UserPost] #
+    user: UserPost #
   }
 
   # type PostDetail {
@@ -51,8 +52,6 @@ type UserPost {
     name: String
     username: String
   }
-
-
 
 #represent the structure of data to be provided, not returned.
   input newPost { 

@@ -15,6 +15,7 @@ import {
 import Card from "../components/Card";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 // const Stack = createNativeStackNavigator();
 // import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -52,6 +53,11 @@ const POSTS = gql`
         name
         username
       }
+      user {
+        _id
+        name
+        username
+      }
     }
   }
 `;
@@ -60,9 +66,34 @@ export default function HomeScreen({ navigation }) {
   const { data, loading, error } = useQuery(POSTS);
   console.log(data, loading, error);
 
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      let newPosts = data.posts.map((el) => {
+        let obj = {
+          id: el._id,
+          createdAt: el.createdAt,
+          content: el.content,
+          tags: el.tags,
+          profile: `https://www.gravatar.com/avatar/${el._id}?s=200&r=pg&d=robohash`,
+          imgUrl: el.imgUrl,
+          authorId: el.authorId,
+          comments: el.comments,
+          likes: el.likes,
+          user: el.user,
+        };
+        return obj;
+      });
+      setPosts(newPosts);
+    }
+  }, [data]);
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "honeydew" }}>
-      <Card />
+      {posts.map((post) => (
+        <Card key={post.id} post={post} navigation={navigation} />
+      ))}
     </ScrollView>
   );
 }

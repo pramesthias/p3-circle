@@ -6,7 +6,20 @@ module.exports = class Post {
   static async allPosts() {
     return getDb()
       .collection("Posts")
-      .aggregate([{ $sort: { createdAt: -1 } }])
+      .aggregate([
+        { $sort: { createdAt: -1 } },
+        {
+          $lookup: {
+            from: "Users",
+            localField: "authorId",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+      ])
       .toArray();
 
     // return getDb().collection("Posts").find().toArray(); => find(query)

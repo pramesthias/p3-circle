@@ -1,37 +1,52 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { MaterialIcons } from "@expo/vector-icons";
 
-export default function Card() {
+export default function Card({ post, navigation }) {
   return (
     <TouchableOpacity
-    // onPress={handlePostClick}
+      onPress={() => {
+        navigation.navigate("PostDetail", {
+          id: post.id,
+        });
+      }}
     >
       <View style={styles.container}>
         <View style={styles.user}>
           <Image
             source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL4GBnSDjUWXBI08tL0Xj_BuFqu3iZEXW3wnAV4_GfX9-klTFV9IczV-RmW3UrK0Pvp0I&usqp=CAU",
+              uri: `${post.profile}`,
             }}
             style={styles.profilePic}
           />
-          <Text style={styles.username}>SUZY</Text>
+          <Text style={styles.username}>{post.user.username}</Text>
         </View>
         <Image
           source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL4GBnSDjUWXBI08tL0Xj_BuFqu3iZEXW3wnAV4_GfX9-klTFV9IczV-RmW3UrK0Pvp0I&usqp=CAU",
+            uri: `${post.imgUrl}`,
           }}
           style={styles.postImage}
         />
         <View style={styles.content}>
-          <Text>abcdddddddddddddddddddddsjgfDWJLRIFWJOI</Text>
-          <TouchableOpacity
-            // onPress={handleLike}
-            style={{ alignItems: "center" }}
+          <Text>{post.content}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
+              marginTop: 10,
+            }}
           >
-            <Ionicons name="heart-circle" size={35} color="black" />
-            <Text>COUNT 11</Text>
-          </TouchableOpacity>
-          {/* <Text>Likes:</Text> */}
+            <View style={{ marginLeft: 20 }}>
+              <Ionicons name="heart-circle" size={35} color="black" />
+              <Text style={{ marginLeft: 15 }}>{post.likes.length}</Text>
+            </View>
+
+            <View style={{ marginRight: 20 }}>
+              <MaterialIcons name="comment" size={34} color="black" />
+              <Text style={{ marginLeft: 15 }}>{post.comments.length}</Text>
+            </View>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -40,9 +55,9 @@ export default function Card() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    margin: 15,
     borderWidth: 1,
-    borderColor: "lightcyan",
+    borderColor: "lightgray",
     borderRadius: 10,
     padding: 10,
     backgroundColor: "azure",

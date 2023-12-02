@@ -92,10 +92,10 @@ Lakukan komunikasi Aplikasi Mobile (react-native) menggunakan apollo client ke s
 
 - [x] Register (Mutation)
 - [x] Login (Query)
-- [ ] Get Post (Query)
+- [x] Get Post (Query)
 - [x] Add Post (Mutation)
 - [ ] Comment Post (Mutation)
-- [ ] Search User (Query)
-- [ ] Follow (Mutation)
+- [x] Search User (Query)
+- [x] Follow (Mutation)
 - [ ] Get User (Query)
 - [ ] Like Post (Mutation)

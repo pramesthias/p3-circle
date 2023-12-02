@@ -13,8 +13,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function PostDetail() {
+export default function PostDetail({ route }) {
   const { height, width } = useWindowDimensions();
+  const { id } = route.params;
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "honeydew" }}>
