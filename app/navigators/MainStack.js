@@ -9,6 +9,8 @@ import Login from "../screens/Login";
 import HomeScreen from "../screens/HomeScreen";
 import Register from "../screens/Register";
 import LogoutButton from "../components/LogoutButton";
+import Logo from "../components/Logo";
+import TabNav from "./TabNav";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,12 +24,11 @@ export default function MainStack() {
         {isLoggedIn ? (
           <>
             <Stack.Screen
-              name="Home"
-              component={HomeScreen}
+              name="Main"
+              component={TabNav}
               options={() => {
                 return {
-                  headerShown: true,
-                  // headerTitle: () => <Logo size={"sm"} />,
+                  headerTitle: () => <Logo />,
                   headerRight: () => <LogoutButton />,
                 };
               }}
@@ -40,7 +41,7 @@ export default function MainStack() {
               component={Login}
               options={() => {
                 return {
-                  headerShown: false, // hilangin <- Landing
+                  headerShown: false,
                 };
               }}
             />
@@ -50,7 +51,7 @@ export default function MainStack() {
               component={Register}
               options={() => {
                 return {
-                  headerShown: false, // hilangin <- Landing
+                  headerShown: false,
                 };
               }}
             />

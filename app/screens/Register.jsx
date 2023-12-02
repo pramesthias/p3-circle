@@ -1,6 +1,7 @@
 import {
   Image,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -21,7 +22,7 @@ export default function Register({ navigation }) {
       >
         <Image
           source={require("../img/logo.png")}
-          style={{ width: 250, height: 250 }}
+          style={{ width: 230, height: 230 }}
         />
         {/* <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 }}>
    Login
@@ -30,31 +31,13 @@ export default function Register({ navigation }) {
       <View
         style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
       >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
+        <View style={styles.icon}>
           <MaterialIcons name="font-download" size={22} color="black" />
         </View>
 
         <TextInput
           // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
+          style={styles.textInput}
           placeholder="Your Name Here"
           // onChangeText={(text) => setFormData(text)}
         />
@@ -62,31 +45,13 @@ export default function Register({ navigation }) {
       <View
         style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
       >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
+        <View style={styles.icon}>
           <Ionicons name="at-circle" size={22} color="black" />
         </View>
 
         <TextInput
           // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
+          style={styles.textInput}
           placeholder="Your Username Here"
           // onChangeText={(text) => setFormData(text)}
         />
@@ -94,31 +59,13 @@ export default function Register({ navigation }) {
       <View
         style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
       >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
+        <View style={styles.icon}>
           <Ionicons name="mail" size={22} color="black" />
         </View>
 
         <TextInput
           // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
+          style={styles.textInput}
           placeholder="Your Email Here"
           // onChangeText={(text) => setFormData(text)}
         />
@@ -126,45 +73,18 @@ export default function Register({ navigation }) {
       <View
         style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
       >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "lightgreen",
-            width: 50,
-            borderBottomLeftRadius: 15,
-            borderTopLeftRadius: 15,
-            elevation: 2,
-          }}
-        >
+        <View style={styles.icon}>
           <Ionicons name="lock-closed" size={22} color="black" />
         </View>
 
         <TextInput
           // value={email}
-          style={{
-            backgroundColor: "lightgreen",
-            flex: 1,
-            borderTopRightRadius: 15,
-            borderBottomRightRadius: 15,
-            paddingVertical: 10,
-            elevation: 2,
-            paddingLeft: 10,
-          }}
+          style={styles.textInput}
           placeholder="Your Password Here"
           // onChangeText={(text) => setFormData(text)}
         />
       </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "darkgreen",
-          paddingVertical: 14,
-          marginTop: 30,
-          marginHorizontal: 30,
-          borderRadius: 50,
-          elevation: 2,
-        }}
-      >
+      <TouchableOpacity style={styles.regButton}>
         <Text
           style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
         >
@@ -180,3 +100,32 @@ export default function Register({ navigation }) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: "lightgreen",
+    flex: 1,
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    paddingVertical: 15,
+    elevation: 2,
+    paddingLeft: 10,
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "lightgreen",
+    width: 50,
+    borderBottomLeftRadius: 15,
+    borderTopLeftRadius: 15,
+    elevation: 2,
+  },
+  regButton: {
+    backgroundColor: "darkgreen",
+    paddingVertical: 14,
+    marginTop: 30,
+    marginHorizontal: 30,
+    borderRadius: 50,
+    elevation: 2,
+  },
+});

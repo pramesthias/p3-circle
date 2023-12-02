@@ -74,15 +74,15 @@ Pada aplikasi ini kamu perlu membuat screen sebagai berikut:
   - [x] Register Screen: Menampilkan form untuk register
 
 - [ ] Authenticate screen
-  - [ ] Home screen: Menampilkan list post
-  - [ ] Create Post: Menampilkan form untuk menambahkan post baru
+  - [x] Home screen: Menampilkan list post
+  - [x] Create Post: Menampilkan form untuk menambahkan post baru
   - [ ] Post Detail Screen: Menampilkan post detail berdasarkan id dan form untuk komentar
   - [ ] Search Screen: Menampilkan form pencarian untuk mencari user (bisa digabung dengan screen lain)
   - [x] Profile Screen: Menampilkan profile user berdasarkan id, serta menampilkan jumlah followings dan followers user.
 
 ### React Navigation
 
-- [ ] Implementasikan navigasi pada screen yang sudah kamu buat dengan menggunakan React Navigation.
+- [x] Implementasikan navigasi pada screen yang sudah kamu buat dengan menggunakan React Navigation.
 
 ## Day 4
 

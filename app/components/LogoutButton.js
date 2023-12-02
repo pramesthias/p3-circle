@@ -13,13 +13,13 @@ export default function LogoutButton() {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "seagreen",
-          paddingVertical: 5,
-          paddingHorizontal: 15,
+          paddingVertical: 6,
+          paddingHorizontal: 10,
           borderRadius: 10,
         }}
         onPress={() => logoutAction("token")}
       >
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+        <Text style={{ fontSize: 15, fontWeight: "bold", color: "white" }}>
           Log Out
         </Text>
       </TouchableOpacity>

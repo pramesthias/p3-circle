@@ -2,6 +2,7 @@ import { useContext } from "react";
 import {
   Image,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -36,31 +37,13 @@ export default function Login({ navigation }) {
         <View
           style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 20 }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "lightgreen",
-              width: 50,
-              borderBottomLeftRadius: 15,
-              borderTopLeftRadius: 15,
-              elevation: 2,
-            }}
-          >
+          <View style={styles.icon}>
             <Ionicons name="mail" size={25} color="black" />
           </View>
 
           <TextInput
             // value={email}
-            style={{
-              backgroundColor: "lightgreen",
-              flex: 1,
-              borderTopRightRadius: 15,
-              borderBottomRightRadius: 15,
-              paddingVertical: 15,
-              elevation: 2,
-              paddingLeft: 10,
-            }}
+            style={styles.textInput}
             placeholder="Your Email Here"
             // onChangeText={(text) => setFormData(text)}
           />
@@ -68,44 +51,19 @@ export default function Login({ navigation }) {
         <View
           style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 20 }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "lightgreen",
-              width: 50,
-              borderBottomLeftRadius: 15,
-              borderTopLeftRadius: 15,
-              elevation: 2,
-            }}
-          >
+          <View style={styles.icon}>
             <Ionicons name="lock-closed" size={25} color="black" />
           </View>
 
           <TextInput
             // value={email}
-            style={{
-              backgroundColor: "lightgreen",
-              flex: 1,
-              borderTopRightRadius: 15,
-              borderBottomRightRadius: 15,
-              paddingVertical: 15,
-              elevation: 2,
-              paddingLeft: 10,
-            }}
+            style={styles.textInput}
             placeholder="Your Password Here"
             // onChangeText={(text) => setFormData(text)}
           />
         </View>
         <TouchableOpacity
-          style={{
-            backgroundColor: "darkgreen",
-            paddingVertical: 14,
-            marginTop: 30,
-            marginHorizontal: 30,
-            borderRadius: 50,
-            elevation: 2,
-          }}
+          style={styles.logButton}
           onPress={async () => {
             // navigation.replace("Home"); // HERE
             await loginAction("token", "www");
@@ -129,3 +87,32 @@ export default function Login({ navigation }) {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: "lightgreen",
+    flex: 1,
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    paddingVertical: 15,
+    elevation: 2,
+    paddingLeft: 10,
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "lightgreen",
+    width: 50,
+    borderBottomLeftRadius: 15,
+    borderTopLeftRadius: 15,
+    elevation: 2,
+  },
+  logButton: {
+    backgroundColor: "darkgreen",
+    paddingVertical: 14,
+    marginTop: 30,
+    marginHorizontal: 30,
+    borderRadius: 50,
+    elevation: 2,
+  },
+});
