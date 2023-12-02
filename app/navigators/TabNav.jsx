@@ -15,10 +15,6 @@ import Users from "../screens/Users";
 import PostDetail from "../screens/PostDetail";
 
 export default function TabNav() {
-  // const [formData, setFormData] = useState(')
-
-  //   const { height, width } = useWindowDimensions(); // => ADD FORM POST
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

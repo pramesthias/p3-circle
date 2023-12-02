@@ -7,11 +7,15 @@ const Tab = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
 import { LoginProvider } from "./context/LoginContext";
 import MainStack from "./navigators/MainStack";
+import { ApolloProvider } from "@apollo/client";
+import client from "./config/apollo";
 
 export default function App() {
   return (
-    <LoginProvider>
-      <MainStack />
-    </LoginProvider>
+    <ApolloProvider client={client}>
+      <LoginProvider>
+        <MainStack />
+      </LoginProvider>
+    </ApolloProvider>
   );
 }

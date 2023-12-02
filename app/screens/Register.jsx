@@ -9,25 +9,12 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import LogoForm from "../components/LogoForm";
 
 export default function Register({ navigation }) {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "whitesmoke" }}>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 60,
-        }}
-      >
-        <Image
-          source={require("../img/logo.png")}
-          style={{ width: 230, height: 230 }}
-        />
-        {/* <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 }}>
-   Login
- </Text> */}
-      </View>
+      <LogoForm size={60} />
       <View
         style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 15 }}
       >

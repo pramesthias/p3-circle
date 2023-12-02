@@ -12,6 +12,7 @@ import { FontAwesome5 } from "@expo/vector-icons"; // => ADD FORM POST
 import { MaterialIcons } from "@expo/vector-icons"; // => ADD FORM POST
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { View } from "react-native";
+import LogoForm from "../components/LogoForm";
 
 export default function AddPost() {
   const { height, width } = useWindowDimensions(); // => ADD FORM POST
@@ -24,18 +25,7 @@ export default function AddPost() {
         }}
         style={{ flex: 1, height: height }}
       >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 40, //here top margin
-          }}
-        >
-          <Image
-            source={require("../img/logo.png")}
-            style={{ width: 230, height: 230 }}
-          />
-        </View>
+        <LogoForm size={40} />
         <View
           style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 10 }}
         >

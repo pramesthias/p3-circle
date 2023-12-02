@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -12,40 +13,62 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { LoginContext } from "../context/LoginContext";
+import LogoForm from "../components/LogoForm";
+import { hasAnyDirectives } from "@apollo/client/utilities";
+import { gql, useMutation } from "@apollo/client";
+
+const LOGIN = gql`
+  mutation Mutation($username: String!, $password: String!) {
+    userLogin(username: $username, password: $password) {
+      accessToken
+    }
+  }
+`;
 
 export default function Login({ navigation }) {
   const { loginAction } = useContext(LoginContext);
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+  });
+  const [login, { data, loading, error }] = useMutation(LOGIN);
+
+  const handleChange = (name, text) => {
+    console.log(text);
+    setInput({ ...input, [name]: text });
+  };
+
+  const handleLogin = async () => {
+    try {
+      if (loading) return;
+      console.log(input);
+      await login({
+        variables: { username: input.username, password: input.password },
+      });
+      await loginAction("token", data.userLogin.accessToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(data, error, loading);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1, backgroundColor: "whitesmoke" }}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 65, //here top margin
-          }}
-        >
-          <Image
-            source={require("../img/logo.png")}
-            style={{ width: 280, height: 280 }}
-          />
-          {/* <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 }}>
-   Login
- </Text> */}
-        </View>
+        <LogoForm size={65} />
         <View
           style={{ flexDirection: "row", marginHorizontal: 30, marginTop: 20 }}
         >
           <View style={styles.icon}>
-            <Ionicons name="mail" size={25} color="black" />
+            <Ionicons name="at-circle" size={25} color="black" />
           </View>
 
           <TextInput
-            // value={email}
+            value={input.username}
             style={styles.textInput}
-            placeholder="Your Email Here"
-            // onChangeText={(text) => setFormData(text)}
+            placeholder="Your Username Here"
+            onChangeText={(text) => handleChange("username", text)}
           />
         </View>
         <View
@@ -56,24 +79,26 @@ export default function Login({ navigation }) {
           </View>
 
           <TextInput
-            // value={email}
+            value={input.password}
             style={styles.textInput}
             placeholder="Your Password Here"
-            // onChangeText={(text) => setFormData(text)}
+            onChangeText={(text) => handleChange("password", text)}
           />
         </View>
-        <TouchableOpacity
-          style={styles.logButton}
-          onPress={async () => {
-            // navigation.replace("Home"); // HERE
-            await loginAction("token", "www");
-          }}
-        >
-          <Text
-            style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-          >
-            LOGIN
-          </Text>
+        <TouchableOpacity style={styles.logButton} onPress={handleLogin}>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              LOGIN
+            </Text>
+          )}
         </TouchableOpacity>
         <View
           style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}

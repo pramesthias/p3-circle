@@ -13,14 +13,12 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import DetailsScreen from "../screens/DetailScreen";
 
 const Stack = createNativeStackNavigator();
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
-import LogoutButton from "../components/LogoutButton";
 
 import Card from "../components/Card";
 
