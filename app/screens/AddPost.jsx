@@ -52,12 +52,12 @@ const ADD_POST = gql`
   }
 `;
 
-export default function AddPost() {
+export default function AddPost({ navigation }) {
   const { height, width } = useWindowDimensions(); // => ADD FORM POST
   const [input, setInput] = useState({
     content: "",
     imgUrl: "",
-    tags: [""],
+    tags: "",
   });
   const [addPost, { data, loading, error }] = useMutation(ADD_POST);
 
@@ -70,7 +70,7 @@ export default function AddPost() {
     try {
       if (loading) return;
       console.log(input);
-      await addPost({
+      const { data } = await addPost({
         variables: {
           post: {
             content: input.content,
@@ -79,6 +79,8 @@ export default function AddPost() {
           },
         },
       });
+      console.log(data);
+      setInput("");
       navigation.navigate("Home");
     } catch (error) {
       console.log(error);
@@ -153,6 +155,7 @@ export default function AddPost() {
             borderRadius: 50,
             elevation: 20,
           }}
+          onPress={handleAddPost}
         >
           {loading ? (
             <ActivityIndicator />
