@@ -97,7 +97,8 @@ const resolvers = {
         const postCache = await redis.get(`${user.id}:post:all`); //"post:all" => entitas:all
         let result;
 
-        if (postCache) {
+        // if (postCache) {
+        if (false) {
           result = JSON.parse(postCache);
           console.log("FROM CACHE");
         } else {
@@ -141,15 +142,13 @@ const resolvers = {
       const user = await contextValue.authentication();
 
       try {
-        const { content, tags, imgUrl, comments, likes } = args.post;
+        const { content, tags, imgUrl } = args.post;
         const authorId = user.id;
 
         const post = await Post.addPost({
           content,
           tags,
           imgUrl,
-          comments,
-          likes,
           authorId,
         });
 

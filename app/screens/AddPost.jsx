@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ImageBackground,
   ScrollView,
@@ -13,9 +14,78 @@ import { MaterialIcons } from "@expo/vector-icons"; // => ADD FORM POST
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { View } from "react-native";
 import LogoForm from "../components/LogoForm";
+import { gql, useMutation } from "@apollo/client";
+import { useState } from "react";
+
+const ADD_POST = gql`
+  mutation AddPost($post: newPost) {
+    addPost(post: $post) {
+      _id
+      content
+      tags
+      imgUrl
+      authorId
+      comments {
+        content
+        authorId
+        createdAt
+        updatedAt
+      }
+      likes {
+        authorId
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      commentUsers {
+        _id
+        name
+        username
+      }
+      likeUsers {
+        _id
+        name
+        username
+      }
+    }
+  }
+`;
 
 export default function AddPost() {
   const { height, width } = useWindowDimensions(); // => ADD FORM POST
+  const [input, setInput] = useState({
+    content: "",
+    imgUrl: "",
+    tags: [""],
+  });
+  const [addPost, { data, loading, error }] = useMutation(ADD_POST);
+
+  const handleChange = (name, text) => {
+    console.log(text);
+    setInput({ ...input, [name]: text });
+  };
+
+  const handleAddPost = async () => {
+    try {
+      if (loading) return;
+      console.log(input);
+      await addPost({
+        variables: {
+          post: {
+            content: input.content,
+            imgUrl: input.imgUrl,
+            tags: input.tags,
+          },
+        },
+      });
+      navigation.navigate("Home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(data, error, loading);
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -34,10 +104,10 @@ export default function AddPost() {
           </View>
 
           <TextInput
-            // value={email}
+            value={input.imgUrl}
             style={styles.text}
             placeholder="Image URL"
-            // onChangeText={(text) => setFormData(text)}
+            onChangeText={(text) => handleChange("imgUrl", text)}
           />
         </View>
 
@@ -49,10 +119,11 @@ export default function AddPost() {
           </View>
 
           <TextInput
-            // value={email}
+            value={input.tags}
+            multiline
             style={styles.text}
             placeholder="Hastags"
-            // onChangeText={(text) => setFormData(text)}
+            onChangeText={(text) => handleChange("tags", text)}
           />
         </View>
 
@@ -64,12 +135,12 @@ export default function AddPost() {
           </View>
 
           <TextInput
-            // value={email}
+            value={input.content}
             multiline
             numberOfLines={5}
             style={styles.textMulti}
             placeholder="What's on your thougts?"
-            // onChangeText={(text) => setFormData(text)}
+            onChangeText={(text) => handleChange("content", text)}
           />
         </View>
 
@@ -83,11 +154,19 @@ export default function AddPost() {
             elevation: 20,
           }}
         >
-          <Text
-            style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-          >
-            POST
-          </Text>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              POST
+            </Text>
+          )}
         </TouchableOpacity>
       </ImageBackground>
     </ScrollView>

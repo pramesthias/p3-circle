@@ -42,9 +42,10 @@ export default function Login({ navigation }) {
     try {
       if (loading) return;
       console.log(input);
-      await login({
+      const { data } = await login({
         variables: { username: input.username, password: input.password },
       });
+      console.log(data);
       await loginAction("token", data.userLogin.accessToken);
     } catch (error) {
       console.log(error);

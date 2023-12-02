@@ -90,8 +90,8 @@ Pada aplikasi ini kamu perlu membuat screen sebagai berikut:
 
 Lakukan komunikasi Aplikasi Mobile (react-native) menggunakan apollo client ke server GraphQL yang sudah dibuat. Dan Implementasikan query dan mutation sesuai dengan kebutuhan.
 
-- [ ] Register (Mutation)
-- [ ] Login (Query)
+- [x] Register (Mutation)
+- [x] Login (Query)
 - [ ] Get Post (Query)
 - [ ] Add Post (Mutation)
 - [ ] Comment Post (Mutation)
