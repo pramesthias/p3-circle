@@ -132,12 +132,4 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     elevation: 20,
   },
-  regButton: {
-    backgroundColor: "darkgreen",
-    paddingVertical: 14,
-    marginTop: 30,
-    marginHorizontal: 30,
-    borderRadius: 50,
-    elevation: 2,
-  },
 });

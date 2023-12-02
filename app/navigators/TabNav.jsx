@@ -1,34 +1,17 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import {
-  Button,
-  Image,
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
-import DetailsScreen from "../screens/DetailScreen";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import UserDetail from "../screens/UserDetail";
+import AddPost from "../screens/AddPost";
 
 const Stack = createNativeStackNavigator();
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
 const Tab = createBottomTabNavigator();
-import { useNavigation } from "@react-navigation/native";
 
-import { useWindowDimensions } from "react-native"; // => ADD FORM POST
-import { FontAwesome5 } from "@expo/vector-icons"; // => ADD FORM POST
-import { MaterialIcons } from "@expo/vector-icons"; // => ADD FORM POST
-import UserDetail from "../screens/UserDetail";
-import Logo from "../components/Logo";
-import LogoutButton from "../components/LogoutButton";
-import AddPost from "../screens/AddPost";
+import { NavigationContainer } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Users from "../screens/Users";
 
 export default function TabNav() {
   // const [formData, setFormData] = useState(')
@@ -45,7 +28,7 @@ export default function TabNav() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Add") {
             iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === "Search") {
+          } else if (route.name === "Users") {
             iconName = focused ? "search-circle" : "search-circle-outline";
           } else if (route.name === "User") {
             iconName = focused ? "person" : "person-outline";
@@ -77,8 +60,8 @@ export default function TabNav() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={UserDetail}
+        name="Users"
+        component={Users}
         options={() => {
           return {
             headerShown: false,

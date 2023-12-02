@@ -17,8 +17,7 @@ import DetailsScreen from "../screens/DetailScreen";
 
 const Stack = createNativeStackNavigator();
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { MaterialIcons } from "@expo/vector-icons";
+
 const Tab = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
 import LogoutButton from "../components/LogoutButton";
@@ -26,17 +25,10 @@ import LogoutButton from "../components/LogoutButton";
 import { useWindowDimensions } from "react-native"; // => ADD FORM POST
 import Card from "../components/Card";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const { height, width } = useWindowDimensions(); // => ADD FORM POST
 
   return (
-    // <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    //   <Text>Home Screen</Text>
-    //   <Button
-    //     title="Go to Details"
-    //     onPress={() => navigation.navigate("Details")}
-    //   />
-    // </View>
     <ScrollView style={{ flex: 1 }}>
       <ImageBackground
         source={{
