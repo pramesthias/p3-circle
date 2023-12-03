@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 const USER = gql`
   query Query {
@@ -46,8 +47,8 @@ const USER = gql`
 `;
 
 export default function UserDetail() {
-  const { data, loading, error } = useQuery(USER);
-
+  const { data, loading, error, refetch } = useQuery(USER);
+  const focus = useIsFocused();
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -55,6 +56,12 @@ export default function UserDetail() {
       setUser(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (focus) {
+      refetch();
+    }
+  }, [focus, refetch]);
 
   console.log(data, loading, error);
   return (
@@ -104,7 +111,7 @@ export default function UserDetail() {
 
         <View style={{ flexDirection: "row", marginTop: 40 }}>
           <TouchableOpacity style={styles.follow}>
-            <Text style={{ color: "darkslategrey" }}>FOLLOWER</Text>
+            <Text style={{ color: "darkslategrey" }}>FOLLOWING</Text>
             <Text style={styles.count}>
               {data?.userById?.following?.length
                 ? data?.userById?.following?.length
@@ -112,7 +119,7 @@ export default function UserDetail() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.follow}>
-            <Text style={{ color: "darkslategrey" }}>FOLLOWING</Text>
+            <Text style={{ color: "darkslategrey" }}>FOLLOWER</Text>
             <Text style={styles.count}>
               {data?.userById?.followers?.length
                 ? data?.userById?.followers?.length
