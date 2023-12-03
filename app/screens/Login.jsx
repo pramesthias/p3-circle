@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -49,6 +50,12 @@ export default function Login({ navigation }) {
       await loginAction("token", data.userLogin.accessToken);
     } catch (error) {
       console.log(error);
+      Alert.alert("Error", `${error.message}`, [
+        {
+          text: "OK",
+          style: "default",
+        },
+      ]);
     }
   };
 
@@ -84,6 +91,7 @@ export default function Login({ navigation }) {
             style={styles.textInput}
             placeholder="Your Password Here"
             onChangeText={(text) => handleChange("password", text)}
+            secureTextEntry={true}
           />
         </View>
         <TouchableOpacity style={styles.logButton} onPress={handleLogin}>

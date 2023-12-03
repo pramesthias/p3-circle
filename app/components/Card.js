@@ -8,7 +8,6 @@ export default function Card({ post, navigation }) {
       onPress={() => {
         navigation.navigate("PostDetail", {
           id: post.id,
-          post,
         });
       }}
     >
@@ -29,7 +28,7 @@ export default function Card({ post, navigation }) {
           style={styles.postImage}
         />
         <View style={styles.content}>
-          <Text>{post.content}</Text>
+          <Text style={{ color: "darkgreen" }}>{post.content}</Text>
           <View
             style={{
               flexDirection: "row",
@@ -39,11 +38,11 @@ export default function Card({ post, navigation }) {
             }}
           >
             <View style={{ marginLeft: 20 }}>
-              <Ionicons name="heart-circle" size={35} color="black" />
+              <Ionicons name="heart-circle" size={35} color="seagreen" />
             </View>
 
             <View style={{ marginRight: 20 }}>
-              <MaterialIcons name="comment" size={34} color="black" />
+              <MaterialIcons name="comment" size={34} color="seagreen" />
             </View>
           </View>
         </View>
@@ -74,8 +73,10 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 45,
     height: 45,
-    borderRadius: 20,
+    borderRadius: 30,
     marginRight: 10,
+    borderWidth: 3,
+    borderColor: "seagreen",
   },
   postImage: {
     width: "100%",

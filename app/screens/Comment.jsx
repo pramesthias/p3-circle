@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -37,7 +38,7 @@ const COMMENT = gql`
 
 export default function Comment({ navigation, route }) {
   const { height, width } = useWindowDimensions();
-  const { id } = route.params;
+  const { postId } = route.params;
   const [input, setInput] = useState("");
   const [comment, { data, loading, error }] = useMutation(COMMENT);
 
@@ -53,12 +54,18 @@ export default function Comment({ navigation, route }) {
       const { data } = await comment({
         variables: {
           content: input.content,
-          postId: id,
+          postId: postId,
         },
       });
       console.log(data);
       setInput("");
-      navigation.navigate("PostDetail");
+      Alert.alert("Posted", "Your Comment added Successfully", [
+        {
+          text: "OK",
+          style: "default",
+        },
+      ]);
+      navigation.navigate("PostDetail", { id: postId });
     } catch (error) {
       console.log(error);
     }

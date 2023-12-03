@@ -27,7 +27,7 @@ export default function TabNav() {
             iconName = focused ? "add-circle" : "add-circle-outline";
           } else if (route.name === "Search") {
             iconName = focused ? "search-circle" : "search-circle-outline";
-          } else if (route.name === "UserDetail") {
+          } else if (route.name === "User") {
             iconName = focused ? "person" : "person-outline";
           }
 
@@ -66,7 +66,7 @@ export default function TabNav() {
         }}
       />
       <Tab.Screen
-        name="UserDetail"
+        name="User"
         component={UserDetail}
         options={() => {
           return {

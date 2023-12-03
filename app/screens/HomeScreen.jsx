@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -63,10 +63,10 @@ const POSTS = gql`
 `;
 
 export default function HomeScreen({ navigation }) {
-  const { data, loading, error } = useQuery(POSTS);
-  console.log(data, loading, error);
-
+  const { data, loading, error, refetch } = useQuery(POSTS);
+  // console.log(data, loading, error);
   const [posts, setPosts] = useState([]);
+  const focus = useIsFocused();
 
   useEffect(() => {
     if (data) {
@@ -88,6 +88,12 @@ export default function HomeScreen({ navigation }) {
       setPosts(newPosts);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (focus) {
+      refetch();
+    }
+  }, [focus, refetch]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "honeydew" }}>

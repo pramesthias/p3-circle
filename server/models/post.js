@@ -55,6 +55,17 @@ module.exports = class Post {
             as: "likeUsers",
           },
         },
+        {
+          $lookup: {
+            from: "Users",
+            localField: "authorId",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
       ])
       .toArray();
 

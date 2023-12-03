@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -75,12 +76,18 @@ export default function AddPost({ navigation }) {
           post: {
             content: input.content,
             imgUrl: input.imgUrl,
-            tags: input.tags,
+            tags: input.tags.split(" "),
           },
         },
       });
       console.log(data);
       setInput("");
+      Alert.alert("Posted", "Your Post added Successfully", [
+        {
+          text: "OK",
+          style: "default",
+        },
+      ]);
       navigation.navigate("Home");
     } catch (error) {
       console.log(error);

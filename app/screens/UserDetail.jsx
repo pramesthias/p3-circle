@@ -6,8 +6,57 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+const USER = gql`
+  query Query {
+    userById {
+      _id
+      name
+      username
+      email
+      password
+      followers {
+        _id
+        followingId
+        followerId
+        createdAt
+        updatedAt
+      }
+      following {
+        _id
+        followingId
+        followerId
+        createdAt
+        updatedAt
+      }
+      followersName {
+        _id
+        name
+        username
+      }
+      followingName {
+        _id
+        name
+        username
+      }
+    }
+  }
+`;
 
 export default function UserDetail() {
+  const { data, loading, error } = useQuery(USER);
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+    }
+  }, [data]);
+
+  console.log(data, loading, error);
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
@@ -18,15 +67,16 @@ export default function UserDetail() {
       >
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Image
-            // source={require("../img/tes.jpg")}
             source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL4GBnSDjUWXBI08tL0Xj_BuFqu3iZEXW3wnAV4_GfX9-klTFV9IczV-RmW3UrK0Pvp0I&usqp=CAU",
+              uri: `https://www.gravatar.com/avatar/${data?.userById._id}?s=200&r=pg&d=robohash`,
             }}
             style={{
               width: 200,
               height: 200,
               borderRadius: 100,
               marginTop: 70,
+              borderWidth: 4,
+              borderColor: "whitesmoke",
             }}
           />
         </View>
@@ -45,31 +95,31 @@ export default function UserDetail() {
               color: "darkgreen",
             }}
           >
-            NAMA USER
+            {data?.userById.name}
           </Text>
-          <Text style={{ fontSize: 28, color: "darkgreen" }}>
-            username / email
+          <Text style={{ fontSize: 25, color: "darkgreen" }}>
+            {data?.userById.username}
           </Text>
         </View>
 
         <View style={{ flexDirection: "row", marginTop: 40 }}>
           <TouchableOpacity style={styles.follow}>
             <Text style={{ color: "darkslategrey" }}>FOLLOWER</Text>
-            <Text style={styles.count}>1110</Text>
+            <Text style={styles.count}>
+              {data?.userById?.following?.length
+                ? data?.userById?.following?.length
+                : 0}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.follow}>
             <Text style={{ color: "darkslategrey" }}>FOLLOWING</Text>
-            <Text style={styles.count}>1110</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* <View style={{ flex: 1, marginTop: 40, marginBottom: 20 }}>
-          <TouchableOpacity style={styles.add}>
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-              Add Friend
+            <Text style={styles.count}>
+              {data?.userById?.followers?.length
+                ? data?.userById?.followers?.length
+                : 0}
             </Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </ImageBackground>
     </View>
   );
@@ -86,15 +136,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "darkslategrey",
   },
-  //   add: {
-  //     flex: 1,
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //     backgroundColor: "darkcyan",
-  //     paddingVertical: 30,
-  //     paddingHorizontal: 10,
-  //     marginLeft: 50,
-  //     marginRight: 50,
-  //     borderRadius: 15,
-  //   },
 });

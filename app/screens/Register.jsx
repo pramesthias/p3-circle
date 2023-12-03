@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -89,6 +90,12 @@ export default function Register({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       console.log(error);
+      Alert.alert("Error", `${error.message}`, [
+        {
+          text: "OK",
+          style: "default",
+        },
+      ]);
     }
   };
 
@@ -151,6 +158,7 @@ export default function Register({ navigation }) {
           style={styles.textInput}
           placeholder="Your Password Here"
           onChangeText={(text) => handleChange("password", text)}
+          secureTextEntry={true}
         />
       </View>
       <TouchableOpacity style={styles.regButton} onPress={handleRegister}>

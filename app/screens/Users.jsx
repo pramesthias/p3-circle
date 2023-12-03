@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -87,7 +88,13 @@ export default function Users({ navigation }) {
       await follow({
         variables: { followingId: id },
       });
-      navigation.navigate("UserDetail");
+      // navigation.navigate("UserDetail");
+      Alert.alert("Followed", "You are now following this user", [
+        {
+          text: "OK",
+          style: "default",
+        },
+      ]);
     } catch (error) {
       console.log(error);
     }
@@ -112,14 +119,14 @@ export default function Users({ navigation }) {
           />
 
           <TouchableOpacity style={styles.icon} onPress={handleSearch}>
-            <MaterialIcons name="person-search" size={25} color="black" />
+            <MaterialIcons name="person-search" size={25} color="seagreen" />
           </TouchableOpacity>
         </View>
 
         {/* USER ITERATE */}
-        {data?.searchUser.map((u) => (
+        {data?.searchUser.map((u, idx) => (
           <View
-            key={u.id}
+            key={idx}
             style={{
               flexDirection: "row",
               marginHorizontal: 30,
@@ -138,7 +145,7 @@ export default function Users({ navigation }) {
               onPress={() => handleFollow(u.id)}
               style={styles.icon}
             >
-              <Ionicons name="person-add" size={22} color="black" />
+              <Ionicons name="person-add" size={22} color="seagreen" />
             </TouchableOpacity>
           </View>
         ))}
@@ -166,6 +173,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     fontWeight: "bold",
     paddingLeft: 30,
+    color: "darkgreen",
   },
   icon: {
     justifyContent: "center",
@@ -192,7 +200,9 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 45,
     height: 45,
-    borderRadius: 20,
+    borderRadius: 30,
     marginRight: 10,
+    borderWidth: 3,
+    borderColor: "darkgreen",
   },
 });
